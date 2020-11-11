@@ -1,0 +1,12 @@
+programa
+  leia(a);
+  leia(b);
+  
+  a = 1 + 2 * 3 / b ;
+  
+  escreva(a);
+  escreva(b);
+  
+  
+
+fimprog;
