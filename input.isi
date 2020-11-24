@@ -1,11 +1,15 @@
 programa
+
+  numero a, b;
+  texto  t1;
+
   leia(a);
   leia(b);
   
-  a = 1 + 2 * 3 / b ;
+  a = 1 + 2 * 3 / b;
   
   escreva(a);
-  escreva(b);
+  escreva(w);
   
   
 

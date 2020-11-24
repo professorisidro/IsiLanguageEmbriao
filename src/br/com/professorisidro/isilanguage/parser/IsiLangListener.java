@@ -1,5 +1,12 @@
 // Generated from IsiLang.g4 by ANTLR 4.7.1
 package br.com.professorisidro.isilanguage.parser;
+
+	import br.com.professorisidro.isilanguage.datastructures.IsiSymbol;
+	import br.com.professorisidro.isilanguage.datastructures.IsiVariable;
+	import br.com.professorisidro.isilanguage.datastructures.IsiSymbolTable;
+	import br.com.professorisidro.isilanguage.exceptions.IsiSemanticException;	
+	import java.util.ArrayList;
+
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -17,6 +24,36 @@ public interface IsiLangListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitProg(IsiLangParser.ProgContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link IsiLangParser#decl}.
+	 * @param ctx the parse tree
+	 */
+	void enterDecl(IsiLangParser.DeclContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link IsiLangParser#decl}.
+	 * @param ctx the parse tree
+	 */
+	void exitDecl(IsiLangParser.DeclContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link IsiLangParser#declaravar}.
+	 * @param ctx the parse tree
+	 */
+	void enterDeclaravar(IsiLangParser.DeclaravarContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link IsiLangParser#declaravar}.
+	 * @param ctx the parse tree
+	 */
+	void exitDeclaravar(IsiLangParser.DeclaravarContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link IsiLangParser#tipo}.
+	 * @param ctx the parse tree
+	 */
+	void enterTipo(IsiLangParser.TipoContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link IsiLangParser#tipo}.
+	 * @param ctx the parse tree
+	 */
+	void exitTipo(IsiLangParser.TipoContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link IsiLangParser#bloco}.
 	 * @param ctx the parse tree
