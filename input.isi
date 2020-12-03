@@ -8,8 +8,13 @@ programa
   
   a = 1 + 2 * 3 / b;
   
-  escreva(a);
-  escreva(w);
+
+  se ( a > b ) {
+     escreva (a);
+  }
+  senao {
+     escreva (b);
+  }
   
   
 

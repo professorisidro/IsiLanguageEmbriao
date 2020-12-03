@@ -4,8 +4,15 @@ package br.com.professorisidro.isilanguage.parser;
 	import br.com.professorisidro.isilanguage.datastructures.IsiSymbol;
 	import br.com.professorisidro.isilanguage.datastructures.IsiVariable;
 	import br.com.professorisidro.isilanguage.datastructures.IsiSymbolTable;
-	import br.com.professorisidro.isilanguage.exceptions.IsiSemanticException;	
+	import br.com.professorisidro.isilanguage.exceptions.IsiSemanticException;
+	import br.com.professorisidro.isilanguage.ast.IsiProgram;
+	import br.com.professorisidro.isilanguage.ast.AbstractCommand;
+	import br.com.professorisidro.isilanguage.ast.CommandLeitura;
+	import br.com.professorisidro.isilanguage.ast.CommandEscrita;
+	import br.com.professorisidro.isilanguage.ast.CommandAtribuicao;
+	import br.com.professorisidro.isilanguage.ast.CommandDecisao;
 	import java.util.ArrayList;
+	import java.util.Stack;
 
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -104,6 +111,16 @@ public interface IsiLangListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitCmdattrib(IsiLangParser.CmdattribContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link IsiLangParser#cmdselecao}.
+	 * @param ctx the parse tree
+	 */
+	void enterCmdselecao(IsiLangParser.CmdselecaoContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link IsiLangParser#cmdselecao}.
+	 * @param ctx the parse tree
+	 */
+	void exitCmdselecao(IsiLangParser.CmdselecaoContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link IsiLangParser#expr}.
 	 * @param ctx the parse tree
