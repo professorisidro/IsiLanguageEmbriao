@@ -148,9 +148,11 @@ cmdattrib	:  ID { verificaID(_input.LT(-1).getText());
 			
 			
 cmdselecao  :  'se' AP
-                    ID    { _exprDecision = _input.LT(-1).getText(); }
+                    ID    { verificaID(_input.LT(-1).getText());
+                    		_exprDecision = _input.LT(-1).getText(); }
                     OPREL { _exprDecision += _input.LT(-1).getText(); }
-                    (ID | NUMBER) {_exprDecision += _input.LT(-1).getText(); }
+                    (ID   { verificaID(_input.LT(-1).getText()); }
+                    | NUMBER) {_exprDecision += _input.LT(-1).getText(); }
                     FP 
                     ACH 
                     { curThread = new ArrayList<AbstractCommand>(); 
@@ -179,7 +181,8 @@ cmdselecao  :  'se' AP
             ;
             
 cmdenquanto    : 'enquanto' AP
-                    		ID    { _exprDecision = _input.LT(-1).getText(); }
+                    		ID    { verificaID(_input.LT(-1).getText());
+                    				_exprDecision = _input.LT(-1).getText(); }
                     		OPREL { _exprDecision += _input.LT(-1).getText(); }
                     		(ID | NUMBER) {_exprDecision += _input.LT(-1).getText(); }  
 							FP 
