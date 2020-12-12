@@ -11,6 +11,7 @@ grammar IsiLang;
 	import br.com.professorisidro.isilanguage.ast.CommandEscrita;
 	import br.com.professorisidro.isilanguage.ast.CommandAtribuicao;
 	import br.com.professorisidro.isilanguage.ast.CommandDecisao;
+	import br.com.professorisidro.isilanguage.ast.CommandEnquanto;
 	import java.util.ArrayList;
 	import java.util.Stack;
 }
@@ -31,6 +32,7 @@ grammar IsiLang;
 	private String _exprDecision;
 	private ArrayList<AbstractCommand> listaTrue;
 	private ArrayList<AbstractCommand> listaFalse;
+	private ArrayList<AbstractCommand> listaEnquanto;
 	
 	public void verificaID(String id){
 		if (!symbolTable.exists(id)){
@@ -102,6 +104,7 @@ cmd		:  cmdleitura
  		|  cmdescrita 
  		|  cmdattrib
  		|  cmdselecao  
+ 		|  cmdenquanto
 		;
 		
 cmdleitura	: 'leia' AP
@@ -174,7 +177,24 @@ cmdselecao  :  'se' AP
                    	}
                    )?
             ;
-			
+            
+cmdenquanto    : 'enquanto' AP
+                    		ID    { _exprDecision = _input.LT(-1).getText(); }
+                    		OPREL { _exprDecision += _input.LT(-1).getText(); }
+                    		(ID | NUMBER) {_exprDecision += _input.LT(-1).getText(); }  
+							FP 
+							ACH 
+		                    { curThread = new ArrayList<AbstractCommand>(); 
+		                      stack.push(curThread);
+		                    }							
+							(cmd)+
+							FCH 
+							{
+							    listaEnquanto = stack.pop();
+							    CommandEnquanto cmd = new CommandEnquanto(_exprDecision, listaEnquanto);
+							    stack.peek().add(cmd);
+							}
+			;
 expr		:  termo ( 
 	             OP  { _exprContent += _input.LT(-1).getText();}
 	            termo
