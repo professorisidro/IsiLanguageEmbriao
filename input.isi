@@ -1,16 +1,30 @@
 programa
 
-  numero a, b;
-  texto  t1;
+numero a, b;
+texto  t1;
 
-  leia(a);
-  leia(b);
+leia(a);
+leia(b);
   
-  a = 1 + 2 * 3 / b;
+a = 1 + 2 * 3 / b;
+
+a = 5;
+
+enquanto(a < 10){
+escreva(a);
+	a = a +  1;
+}
+
+
+
+se ( a > b ) {
+escreva (a);
+}
+senao {
+escreva (b);
+}
   
-  escreva(a);
-  escreva(w);
-  
-  
+
+ 
 
 fimprog;
