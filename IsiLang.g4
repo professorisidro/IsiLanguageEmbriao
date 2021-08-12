@@ -12,7 +12,7 @@ grammar IsiLang;
 	import br.com.professorisidro.isilanguage.ast.CommandAtribuicao;
 	import br.com.professorisidro.isilanguage.ast.CommandDecisao;
 	import br.com.professorisidro.isilanguage.ast.CommandEnquanto;
-	import br.com.professorisidro.isilanguage.ast.CommandFor;
+	import br.com.professorisidro.isilanguage.ast.CommandPara;
 	import java.util.ArrayList;
 	import java.util.Stack;
 }
@@ -37,11 +37,10 @@ grammar IsiLang;
 	private String _exprWhile;
 	private ArrayList<AbstractCommand> listaWhile;
 	
-	private String _inicialID;
-	private String _finalID;
-	private String _inicialContent;
-	private String _finalContent;
-	private String _exprFor;
+	private String _varFor;
+	private String _inicialFor;
+	private String _finalFor;
+	private String _exprIncrementoFor;
 	private ArrayList<AbstractCommand> listaFor;
 	
 	public void verificaID(String id){
@@ -115,7 +114,7 @@ cmd		:  cmdleitura
  		|  cmdattrib
  		|  cmdselecao  
  		|  cmdenquanto
- 		|  cmdfor
+ 		|  cmdpara
 		;
 		
 cmdleitura	: 'leia' AP
@@ -176,28 +175,28 @@ cmdenquanto	: 'enquanto' AP
 		                    } 	
 		    ; 
 		    
-cmdfor : 'for' AP
-                    ID { verificaID(_input.LT(-1).getText());
-                        _inicialID = _input.LT(-1).getText();
-                       } 
-                      ATTR { _inicialContent = ""; } 
-                       expr
-                       SC
-                       ID    { _exprFor = _input.LT(-1).getText(); }
-                    OPREL { _exprFor += _input.LT(-1).getText(); }
-                    (ID | NUMBER) { _exprFor += _input.LT(-1).getText(); }
-                       expr
-                       ID { verificaID(_input.LT(-1).getText());
-                        _finalID = _input.LT(-1).getText();
-                       } 
-                      ATTR { _finalContent = ""; }
-                      expr
-                      FCH
-               {
-                    listaFor =  stack.pop();
-                    CommandFor cmd = new CommandFor(_inicialID, _finalID, _inicialContent, _finalContent, _exprFor, listaFor);
-                    stack.peek().add(cmd);
-               }
+cmdpara : 'para' 	AP
+                 	ID    { _varFor = _input.LT(-1).getText(); }
+		          	DE	          	
+		          	(NUMBER) { _inicialFor = _input.LT(-1).getText(); }
+		           	ATE
+                    (NUMBER) { _finalFor = _input.LT(-1).getText(); }
+                    SC { _exprContent = ""; } 
+        			expr
+                  	FP
+                 	ACH 
+	                { curThread = new ArrayList<AbstractCommand>(); 
+	                  stack.push(curThread);
+	                }
+	                (cmd)+ 
+	
+	                FCH 
+		                    
+	                {
+	                    listaFor =  stack.pop();
+	                    CommandPara cmd = new CommandPara(_varFor, _inicialFor, _finalFor, _exprContent, listaFor);
+	                    stack.peek().add(cmd);
+	                }
             ;
             		    			
 cmdselecao  :  'se' AP
@@ -247,6 +246,11 @@ termo		: ID { verificaID(_input.LT(-1).getText());
               }
 			;
 			
+DE	: 'de'
+	;
+
+ATE : 'ate'
+	;
 	
 AP	: '('
 	;

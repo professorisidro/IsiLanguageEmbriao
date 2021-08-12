@@ -1,6 +1,6 @@
 programa
 
-numero a, b;
+numero a, b, c;
 texto  t1;
 
 leia(a);
@@ -11,11 +11,13 @@ a = 1 + 2 * 3 / b;
 a = 5;
 
 enquanto(a < 10){
-escreva(a);
+	escreva(a);
 	a = a +  1;
 }
 
-
+para(a de 5 ate 10; a + 1) {
+	escreva(a);
+}
 
 se ( a > b ) {
 escreva (a);
