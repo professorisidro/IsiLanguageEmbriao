@@ -22,4 +22,10 @@ if (a>b) {
 System.out.println(a);}else {
 System.out.println(b);}
 
+c = 10;
+System.out.println(c);
+c = (10%2);
+System.out.println(c);
+c = Math.pow(10,2);
+System.out.println(c);
   }}

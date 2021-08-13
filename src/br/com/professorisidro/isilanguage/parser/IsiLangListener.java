@@ -12,6 +12,7 @@ package br.com.professorisidro.isilanguage.parser;
 	import br.com.professorisidro.isilanguage.ast.CommandAtribuicao;
 	import br.com.professorisidro.isilanguage.ast.CommandDecisao;
 	import br.com.professorisidro.isilanguage.ast.CommandEnquanto;
+	import br.com.professorisidro.isilanguage.ast.CommandOpEsp;
 	import br.com.professorisidro.isilanguage.ast.CommandPara;
 	import java.util.ArrayList;
 	import java.util.Stack;

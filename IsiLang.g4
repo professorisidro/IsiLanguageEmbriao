@@ -12,6 +12,7 @@ grammar IsiLang;
 	import br.com.professorisidro.isilanguage.ast.CommandAtribuicao;
 	import br.com.professorisidro.isilanguage.ast.CommandDecisao;
 	import br.com.professorisidro.isilanguage.ast.CommandEnquanto;
+	import br.com.professorisidro.isilanguage.ast.CommandOpEsp;
 	import br.com.professorisidro.isilanguage.ast.CommandPara;
 	import java.util.ArrayList;
 	import java.util.Stack;
@@ -42,6 +43,7 @@ grammar IsiLang;
 	private String _finalFor;
 	private String _exprIncrementoFor;
 	private ArrayList<AbstractCommand> listaFor;
+	private boolean isOpEsp = false;
 	
 	public void verificaID(String id){
 		if (!symbolTable.exists(id)){
@@ -120,13 +122,13 @@ bloco	: { curThread = new ArrayList<AbstractCommand>();
 		;
 		
 
-cmd		:  cmdleitura  
- 		|  cmdescrita 
- 		|  cmdattrib
- 		|  cmdselecao  
- 		|  cmdenquanto
- 		|  cmdpara
-		;
+cmd      :  cmdleitura  
+         |  cmdescrita 
+         |  cmdattrib
+         |  cmdselecao  
+         |  cmdenquanto
+         |  cmdpara
+        ;
 		
 cmdleitura	: 'leia' AP
                      ID { verificaID(_input.LT(-1).getText());
@@ -243,9 +245,24 @@ cmdselecao  :  'se' AP
 			
 expr		:  termo ( 
 	             OP  { _exprContent += _input.LT(-1).getText();}
-	            termo
+	             termo
+	             |
+	             OPESP { _exprContent += " ";
+                     _exprContent += _input.LT(-1).getText();
+                     _exprContent += " ";
+                     isOpEsp=true;
+                 }
+        		termo
 	            )*
-			;
+	            {
+	            	if(isOpEsp) {
+	            		System.out.println("-----------------------");
+	            		System.out.println(_exprContent);
+	            		CommandOpEsp cmd = new CommandOpEsp(_exprContent);
+                    	_exprContent = cmd.generateJavaCode();
+	            	}
+	            }
+			; 
 			
 termo		: ID { verificaID(_input.LT(-1).getText());
 	               _exprContent += _input.LT(-1).getText();
@@ -274,6 +291,9 @@ SC	: ';'
 	
 OP	: '+' | '-' | '*' | '/'
 	;
+	
+OPESP :    '%' | '^' 
+      ;
 	
 ATTR : '='
 	 ;

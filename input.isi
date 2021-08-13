@@ -28,8 +28,13 @@ escreva (a);
 senao {
 escreva (b);
 }
-  
 
- 
+
+c = 10;
+escreva (c);
+c = 10%2;
+escreva (c);
+c = 10^2;
+escreva (c);
 
 fimprog;
