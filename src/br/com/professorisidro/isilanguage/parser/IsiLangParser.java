@@ -1,6 +1,5 @@
-package br.com.professorisidro.isilanguage.parser;
-
 // Generated from IsiLang.g4 by ANTLR 4.7.1
+package br.com.professorisidro.isilanguage.parser;
 
 	import br.com.professorisidro.isilanguage.datastructures.IsiSymbol;
 	import br.com.professorisidro.isilanguage.datastructures.IsiVariable;
@@ -131,7 +130,9 @@ public class IsiLangParser extends Parser {
 		public void verificaID(String id){
 			if (!symbolTable.exists(id)){
 				throw new IsiSemanticException("Symbol "+id+" not declared");
-			}
+			} 
+			IsiVariable variable = (IsiVariable) symbolTable.get(id);
+			variable.attribution++;
 		}
 		
 		public void exibeComandos(){
@@ -142,6 +143,13 @@ public class IsiLangParser extends Parser {
 		
 		public void generateCode(){
 			program.generateTarget();
+		}
+		
+		public void wasVarInitialized(IsiSymbol symbol){
+			IsiVariable variable = (IsiVariable) symbol;
+			if (!variable.wasInitialized()) {
+				System.out.println("WARNING: Variable " + variable.getName() + "  was not initialized!!");
+			} 
 		}
 
 	public IsiLangParser(TokenStream input) {
@@ -185,7 +193,9 @@ public class IsiLangParser extends Parser {
 			match(T__1);
 			  program.setVarTable(symbolTable);
 			           	  program.setComandos(stack.pop());
-			           	 
+			           	  for(IsiSymbol symbol : symbolTable.getAll()) {
+			           	  	 wasVarInitialized(symbol);
+			           	  }
 			           
 			}
 		}

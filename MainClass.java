@@ -5,7 +5,9 @@ public class MainClass{
 double  a;
 double  b;
 double  c;
+double  d;
 String  t1;
+String  t2;
 a= _key.nextDouble();
 b= _key.nextDouble();
 a = 1+2*3/b;
