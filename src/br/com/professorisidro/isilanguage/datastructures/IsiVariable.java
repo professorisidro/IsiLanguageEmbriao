@@ -4,9 +4,11 @@ public class IsiVariable extends IsiSymbol {
 	
 	public static final int NUMBER=0;
 	public static final int TEXT  =1;
+	public int attribution = 0;
 	
 	private int type;
-	private String value;
+	private String value = null;
+
 	
 	public IsiVariable(String name, int type, String value) {
 		super(name);
@@ -46,6 +48,12 @@ public class IsiVariable extends IsiSymbol {
        return str + " "+super.name+";";
 	}
 	
+	public boolean wasInitialized() {
+		if(attribution>0) {
+			return true;
+		}
+		return false;
+	}
 	
 
 }

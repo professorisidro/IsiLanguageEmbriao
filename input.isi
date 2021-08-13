@@ -1,11 +1,14 @@
 programa
 
 numero a, b, c;
-texto  t1;
+texto  t1, t2;
+
+numero d;
 
 leia(a);
 leia(b);
-  
+
+
 a = 1 + 2 * 3 / b;
 
 a = 5;
