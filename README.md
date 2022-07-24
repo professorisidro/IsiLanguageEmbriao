@@ -21,11 +21,13 @@ Embriao da IsiLanguage - curso de Compiladores
 - [ ] Verificar se há variáveis declaradas e não-utilizadas (warning)	
 - [ ] Geração de pelo menos 1 linguagem destino (C/Java/Python)
 
-### Itens adicionais
+### Itens adicionais (Anexo 1)
 - [ ] A
 - [ ] B
-- [ ] C
-- [ ] D
+
+### Itens extraordinários (Anexo 2)
+- [ ] A
+- [ ] B
 
 ## Link para o vídeo do Youtube
 
