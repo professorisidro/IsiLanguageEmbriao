@@ -4,7 +4,7 @@ Embriao da IsiLanguage - curso de Compiladores
 
 ## Nome e RA dos integrantes:
 * Alan -> 
-* Gabriel ->
+* Gabriel Yuto Munakata -> 11201721879
 * Matheus ->
 * Melissa Gabriela P. da Soledade Perrone -> 11072216
 
