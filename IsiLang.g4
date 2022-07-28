@@ -87,8 +87,9 @@ declaravar :  tipo ID  {
                SC
            ;
            
-tipo       : 'numero' { _tipo = IsiVariable.NUMBER;  }
-           | 'texto'  { _tipo = IsiVariable.TEXT;  }
+tipo       : 'numero'   { _tipo = IsiVariable.NUMBER;  }
+           | 'texto'    { _tipo = IsiVariable.TEXT;    }
+           | 'booleano' { _tipo = IsiVariable.BOOLEAN; }
            ;
         
 bloco	: { curThread = new ArrayList<AbstractCommand>(); 
@@ -135,7 +136,11 @@ cmdattrib	:  ID { verificaID(_input.LT(-1).getText());
                     _exprID = _input.LT(-1).getText();
                    } 
                ATTR { _exprContent = ""; } 
+               (
                expr 
+               | 
+               booleano 
+               ) 
                SC
                {
                	 CommandAtribuicao cmd = new CommandAtribuicao(_exprID, _exprContent);
@@ -176,9 +181,9 @@ cmdselecao  :  'se' AP
             ;
 			
 expr		:  termo ( 
-	             OP  { _exprContent += _input.LT(-1).getText();}
-	            termo
-	            )*
+	                  OP  { _exprContent += _input.LT(-1).getText();}
+	                  termo
+	                 )*
 			;
 			
 termo		: ID { verificaID(_input.LT(-1).getText());
@@ -190,6 +195,11 @@ termo		: ID { verificaID(_input.LT(-1).getText());
               	_exprContent += _input.LT(-1).getText();
               }
 			;
+
+booleano : 'true' { _exprContent += _input.LT(-1).getText(); } 
+			| 
+		   'false' { _exprContent += _input.LT(-1).getText(); }
+         ;
 			
 	
 AP	: '('
@@ -216,7 +226,6 @@ ACH  : '{'
 FCH  : '}'
      ;
 	 
-	 
 OPREL : '>' | '<' | '>=' | '<=' | '==' | '!='
       ;
       
@@ -225,5 +234,5 @@ ID	: [a-z] ([a-z] | [A-Z] | [0-9])*
 	
 NUMBER	: [0-9]+ ('.' [0-9]+)?
 		;
-		
+        		
 WS	: (' ' | '\t' | '\n' | '\r') -> skip;

@@ -7,6 +7,6 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="antlr4-4.7.1-complete.jar"/>
+	<classpathentry kind="lib" path="antlr-4.7.1-complete.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

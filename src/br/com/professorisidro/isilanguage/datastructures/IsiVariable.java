@@ -2,8 +2,9 @@ package br.com.professorisidro.isilanguage.datastructures;
 
 public class IsiVariable extends IsiSymbol {
 	
-	public static final int NUMBER=0;
-	public static final int TEXT  =1;
+	public static final int NUMBER  = 0;
+	public static final int TEXT    = 1;
+	public static final int BOOLEAN = 2;
 	
 	private int type;
 	private String value;

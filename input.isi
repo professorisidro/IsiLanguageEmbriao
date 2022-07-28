@@ -1,21 +1,8 @@
 programa
 
-  numero a, b;
-  texto  t1;
+  booleano a, b;
 
-  leia(a);
-  leia(b);
+  a = false;
+  b = true;
   
-  a = 1 + 2 * 3 / b;
-  
-
-  se ( a > b ) {
-     escreva (a);
-  }
-  senao {
-     escreva (b);
-  }
-  
-  
-
 fimprog;
