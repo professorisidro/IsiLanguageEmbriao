@@ -41,8 +41,10 @@ public class IsiVariable extends IsiSymbol {
        if (type == NUMBER) {
     	   str = "double ";
        }
-       else {
+       else if (type == TEXT){
     	   str = "String ";
+       } else {
+    	   str = "boolean";
        }
        return str + " "+super.name+";";
 	}
