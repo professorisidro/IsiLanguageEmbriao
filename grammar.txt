@@ -1,0 +1,13 @@
+Regra Expr e Termo possuem recursão a esquerda para ser corrigida.
+
+Expr -> Expr + Termo | Expr - Termo | Termo
+Expr -> Termo Expr'
+Expr' -> Termo Expr' | Termo Expr'| <Vazio>
+Expr' -> T ((+|-))*
+Expr -> Termo ((+|-) Termo)*
+
+Termo -> Termo * Fator | Termo / Fator | Fator
+Termo -> Fator Termo'
+Termo' -> Fator * Termo' | Fator / Termo' | <Vazio>
+Termo' -> ((*|/) Fator)*
+Termo -> Fator ((*|/) Fator)*
