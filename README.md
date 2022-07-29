@@ -4,15 +4,15 @@
 
 ### Items obrigatórios
 
-- [ ] Deve ter 2 tipos de variáveis (um deles, obrigatóriamente TEXTO).
-- [ ] Deve ter a estrutura de controle de decisão (if/else - se/senão).
+- [x] Deve ter 2 tipos de variáveis (um deles, obrigatóriamente TEXTO).
+- [x] Deve ter a estrutura de controle de decisão (if/else - se/senão).
 - [ ] Deve ter a estrutura de repetição (while ou enquanto).
 - [ ] A parte de expressões envolvendo os operadores matemáticos deve 
 ser realizada de maneira correta, respeitando a precedência.
 - [ ] Verificação de variáveis não declaradas (cada variável utilizada deve ser
 verificada se foi declarada).
 - [ ] Atribuições: verificação de tipos.
-- [ ] Os comandos de leitura do teclado e de impressão na tela devem ser disponibilizados.
+- [x] Os comandos de leitura do teclado e de impressão na tela devem ser disponibilizados.
 
 ### Anexo 1 - Elementos Adicionais(pelo menos 2 items)
 
