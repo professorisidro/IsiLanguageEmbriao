@@ -9,7 +9,7 @@
 - [ ] Deve ter a estrutura de repetição (while ou enquanto).
 - [ ] A parte de expressões envolvendo os operadores matemáticos deve 
 ser realizada de maneira correta, respeitando a precedência.
-- [ ] Verificação de variáveis não declaradas (cada variável utilizada deve ser
+- [x] Verificação de variáveis não declaradas (cada variável utilizada deve ser
 verificada se foi declarada).
 - [ ] Atribuições: verificação de tipos.
 - [x] Os comandos de leitura do teclado e de impressão na tela devem ser disponibilizados.

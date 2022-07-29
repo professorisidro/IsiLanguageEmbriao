@@ -185,6 +185,7 @@ termo       : fator ((
                     OPMUL {_exprContent += '*';} fator
                     | OPDIV {_exprContent += '/';} fator
                 )?)
+            ;
 
 fator		: ID { verificaID(_input.LT(-1).getText());
 	               _exprContent += _input.LT(-1).getText();
