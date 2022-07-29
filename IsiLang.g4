@@ -174,14 +174,19 @@ cmdselecao  :  'se' AP
                    	}
                    )?
             ;
-			
-expr		:  termo ( 
-	             OP  { _exprContent += _input.LT(-1).getText();}
-	            termo
-	            )*
-			;
-			
-termo		: ID { verificaID(_input.LT(-1).getText());
+
+expr		:  termo ((
+                    OPSOMA {_exprContent += '+';} termo
+                    | OPSUB {_exprContent += '-';} termo
+                )?)
+            ;
+
+termo       : fator ((
+                    OPMUL {_exprContent += '*';} fator
+                    | OPDIV {_exprContent += '/';} fator
+                )?)
+
+fator		: ID { verificaID(_input.LT(-1).getText());
 	               _exprContent += _input.LT(-1).getText();
                  } 
             | 
@@ -189,9 +194,25 @@ termo		: ID { verificaID(_input.LT(-1).getText());
               {
               	_exprContent += _input.LT(-1).getText();
               }
+            |
+              AP {_exprContent += _input.LT(-1).getText();}
+              expr
+              FP {_exprContent += _input.LT(-1).getText();}
 			;
 			
 	
+OPSOMA: '+'
+    ;
+
+OPSUB: '-'
+    ;
+
+OPMUL: '*'
+    ;
+
+OPDIV: '/'
+    ;
+
 AP	: '('
 	;
 	
