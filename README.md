@@ -22,7 +22,7 @@ Embriao da IsiLanguage - curso de Compiladores
 - [ ] Geração de pelo menos 1 linguagem destino (C/Java/Python)
 
 ### Itens adicionais (Anexo 1)
-- [ ] Incluir mais tipos de dados 
+- [X] Incluir mais tipos de dados 
 - [ ] Incluir novos operadores (exponenciação, raiz quadrada, logaritmos)
 
 ### Itens extraordinários (Anexo 2)
