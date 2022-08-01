@@ -5,13 +5,7 @@ grammar IsiLang;
 	import br.com.professorisidro.isilanguage.datastructures.IsiVariable;
 	import br.com.professorisidro.isilanguage.datastructures.IsiSymbolTable;
 	import br.com.professorisidro.isilanguage.exceptions.IsiSemanticException;
-	import br.com.professorisidro.isilanguage.ast.IsiProgram;
-	import br.com.professorisidro.isilanguage.ast.AbstractCommand;
-	import br.com.professorisidro.isilanguage.ast.CommandLeitura;
-	import br.com.professorisidro.isilanguage.ast.CommandEscrita;
-	import br.com.professorisidro.isilanguage.ast.CommandAtribuicao;
-	import br.com.professorisidro.isilanguage.ast.CommandDecisao;
-	import br.com.professorisidro.isilanguage.ast.CommandEnquanto;
+	import br.com.professorisidro.isilanguage.ast.*;
 	import java.util.ArrayList;
 	import java.util.Stack;
 }
@@ -186,6 +180,9 @@ cmdenquanto : 'enquanto' AP
               ACH 
               (cmd)+ 
               FCH
+              {
+                CommandEnquanto cmd = new CommandEnquanto();
+              }
             ;
 
 expr : termo expr_;
