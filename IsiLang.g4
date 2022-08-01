@@ -11,6 +11,7 @@ grammar IsiLang;
 	import br.com.professorisidro.isilanguage.ast.CommandEscrita;
 	import br.com.professorisidro.isilanguage.ast.CommandAtribuicao;
 	import br.com.professorisidro.isilanguage.ast.CommandDecisao;
+	import br.com.professorisidro.isilanguage.ast.CommandEnquanto;
 	import java.util.ArrayList;
 	import java.util.Stack;
 }
@@ -29,6 +30,7 @@ grammar IsiLang;
 	private String _exprID;
 	private String _exprContent;
 	private String _exprDecision;
+    private String _exprEnquanto;
 	private ArrayList<AbstractCommand> listaTrue;
 	private ArrayList<AbstractCommand> listaFalse;
 	
@@ -102,6 +104,7 @@ cmd		:  cmdleitura
  		|  cmdescrita 
  		|  cmdattrib
  		|  cmdselecao  
+        |  cmdenquanto
 		;
 		
 cmdleitura	: 'leia' AP
@@ -145,9 +148,9 @@ cmdattrib	:  ID { verificaID(_input.LT(-1).getText());
 			
 			
 cmdselecao  :  'se' AP
-                    ID    { _exprDecision = _input.LT(-1).getText(); }
+                    (ID | fator) { _exprDecision = _input.LT(-1).getText(); }
                     OPREL { _exprDecision += _input.LT(-1).getText(); }
-                    (ID | NUMBER) {_exprDecision += _input.LT(-1).getText(); }
+                    (ID | fator) {_exprDecision += _input.LT(-1).getText(); }
                     FP 
                     ACH 
                     { curThread = new ArrayList<AbstractCommand>(); 
@@ -175,32 +178,42 @@ cmdselecao  :  'se' AP
                    )?
             ;
 
-expr		:  termo ((
-                    OPSOMA {_exprContent += '+';} termo
-                    | OPSUB {_exprContent += '-';} termo
-                )?)
+cmdenquanto : 'enquanto' AP 
+              (ID | fator) {_exprEnquanto = _input.LT(-1).getText();} 
+              OPREL {_exprEnquanto = _input.LT(-1).getText();}
+              (ID | fator) {_exprEnquanto = _input.LT(-1).getText();}
+              FP 
+              ACH 
+              (cmd)+ 
+              FCH
             ;
 
-termo       : fator ((
-                    OPMUL {_exprContent += '*';} fator
-                    | OPDIV {_exprContent += '/';} fator
-                )?)
-            ;
+expr : termo expr_;
 
-fator		: ID { verificaID(_input.LT(-1).getText());
-	               _exprContent += _input.LT(-1).getText();
-                 } 
-            | 
-              NUMBER
-              {
-              	_exprContent += _input.LT(-1).getText();
-              }
-            |
-              AP {_exprContent += _input.LT(-1).getText();}
-              expr
-              FP {_exprContent += _input.LT(-1).getText();}
-			;
-			
+expr_ : (
+        OPSOMA {_exprContent += '+';} termo expr_
+        | OPSUB {_exprContent += '-';} termo expr_
+      )?
+      ;
+
+termo : fator termo_;
+
+termo_ : (
+        OPMUL {_exprContent += '*';} fator termo_ 
+        | OPDIV {_exprContent += '/';} fator termo_ 
+      )?
+      ;
+
+fator : NUMBER {_exprContent += _input.LT(-1).getText();}
+        | STRING {_exprContent += _input.LT(-1).getText();} 
+        | ID {
+                verificaID(_input.LT(-1).getText());
+                _exprContent += _input.LT(-1).getText();
+            }
+        | AP {_exprContent += _input.LT(-1).getText();}
+          expr
+          FP {_exprContent += _input.LT(-1).getText();}
+      ;
 	
 OPSOMA: '+'
     ;
@@ -247,5 +260,8 @@ ID	: [a-z] ([a-z] | [A-Z] | [0-9])*
 	
 NUMBER	: [0-9]+ ('.' [0-9]+)?
 		;
-		
+
+STRING  : '"' ( '\\"' | . )*? '"'
+        ;
+
 WS	: (' ' | '\t' | '\n' | '\r') -> skip;
