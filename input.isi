@@ -1,8 +1,18 @@
 programa
 
-  booleano a, b;
-
-  a = false;
-  b = true;
+  numero potencia;
+  numero raiz;
+  numero logaritmo;
+  
+  numero potencia2, raiz2, logaritmo2;
+  	
+  potencia = 5^3+7;
+  raiz = sqrt(5);
+  logaritmo = log9(20);
+  
+  potencia2 = potencia^3+7;
+  raiz = sqrt(potencia);
+  logaritmo = log9(raiz);
+  
   
 fimprog;
