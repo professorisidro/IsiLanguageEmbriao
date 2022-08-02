@@ -27,6 +27,7 @@ grammar IsiLang;
     private String _exprEnquanto;
 	private ArrayList<AbstractCommand> listaTrue;
 	private ArrayList<AbstractCommand> listaFalse;
+    private ArrayList<AbstractCommand> listaEnquanto;
 	
 	public void verificaID(String id){
 		if (!symbolTable.exists(id)){
@@ -142,9 +143,9 @@ cmdattrib	:  ID { verificaID(_input.LT(-1).getText());
 			
 			
 cmdselecao  :  'se' AP
-                    (ID | fator) { _exprDecision = _input.LT(-1).getText(); }
+                    (ID | expr) { _exprDecision = _input.LT(-1).getText(); }
                     OPREL { _exprDecision += _input.LT(-1).getText(); }
-                    (ID | fator) {_exprDecision += _input.LT(-1).getText(); }
+                    (ID | expr) {_exprDecision += _input.LT(-1).getText(); }
                     FP 
                     ACH 
                     { curThread = new ArrayList<AbstractCommand>(); 
@@ -173,15 +174,21 @@ cmdselecao  :  'se' AP
             ;
 
 cmdenquanto : 'enquanto' AP 
-              (ID | fator) {_exprEnquanto = _input.LT(-1).getText();} 
-              OPREL {_exprEnquanto = _input.LT(-1).getText();}
-              (ID | fator) {_exprEnquanto = _input.LT(-1).getText();}
+              (ID | expr) {_exprEnquanto = _input.LT(-1).getText();} 
+              OPREL {_exprEnquanto += _input.LT(-1).getText();}
+              (ID | expr) {_exprEnquanto += _input.LT(-1).getText();}
               FP 
               ACH 
+              {
+                curThread = new ArrayList<AbstractCommand>();
+                stack.push(curThread);
+              }
               (cmd)+ 
               FCH
               {
-                CommandEnquanto cmd = new CommandEnquanto();
+                listaEnquanto = stack.pop();
+                CommandEnquanto cmd = new CommandEnquanto(_exprEnquanto, listaEnquanto);
+                stack.peek().add(cmd);
               }
             ;
 
