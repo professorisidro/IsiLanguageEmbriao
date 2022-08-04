@@ -8,6 +8,7 @@ grammar IsiLang;
 	import br.com.professorisidro.isilanguage.ast.*;
 	import java.util.ArrayList;
 	import java.util.Stack;
+    import java.util.HashMap;
 }
 
 @members{
@@ -25,9 +26,14 @@ grammar IsiLang;
 	private String _exprContent;
 	private String _exprDecision;
     private String _exprEnquanto;
+    private String _exprCase;
+    private ArrayList<AbstractCommand> _caseDefault;
+    private HashMap<String, ArrayList<AbstractCommand>> _caseCommands = new HashMap<String, ArrayList<AbstractCommand>>();
+    private String _caseCondition; // usado para guardar o case e salver no hashmap com os commandos correspondentes
 	private ArrayList<AbstractCommand> listaTrue;
 	private ArrayList<AbstractCommand> listaFalse;
     private ArrayList<AbstractCommand> listaEnquanto;
+    private ArrayList<AbstractCommand> listaCase;
 	
 	public void verificaID(String id){
 		if (!symbolTable.exists(id)){
@@ -100,6 +106,7 @@ cmd		:  cmdleitura
  		|  cmdattrib
  		|  cmdselecao  
         |  cmdenquanto
+        |  cmdcaso
 		;
 		
 cmdleitura	: 'leia' AP
@@ -120,12 +127,12 @@ cmdescrita	: 'escreva'
                  AP 
                  ID { verificaID(_input.LT(-1).getText());
 	                  _writeID = _input.LT(-1).getText();
-                     } 
+                    }
                  FP 
                  SC
                {
-               	  CommandEscrita cmd = new CommandEscrita(_writeID);
-               	  stack.peek().add(cmd);
+               	    CommandEscrita cmd = new CommandEscrita(_writeID);
+                    stack.peek().add(cmd);
                }
 			;
 			
@@ -191,6 +198,47 @@ cmdenquanto : 'enquanto' AP
                 stack.peek().add(cmd);
               }
             ;
+            
+cmdcaso     : 'escolha' AP
+              (ID | NUMBER | STRING) {_exprCase = _input.LT(-1).getText();}
+              FP
+              ACH
+              (
+                'caso'
+                (ID | NUMBER | STRING) {_caseCondition = _input.LT(-1).getText();}
+                COLON
+                {
+                    curThread = new ArrayList<AbstractCommand>();
+                    stack.push(curThread);
+                }
+                (cmd)+
+                'break'
+                SC
+                {
+                    System.out.println("case");
+                    listaCase = stack.pop();
+                    _caseCommands.put(_caseCondition, listaCase);
+                }
+              )+
+              (
+                'padrao'
+                COLON
+                {
+                    curThread = new ArrayList<AbstractCommand>();
+                    stack.push(curThread);
+                }
+                (cmd)+
+                'break'
+                SC
+                {
+                    System.out.println("default");
+                    _caseDefault = stack.pop();
+                    CommandCaso cmd = new CommandCaso(_exprCase, _caseCommands, _caseDefault);
+                    stack.peek().add(cmd);
+                }
+              )?
+              FCH
+            ;
 
 expr : termo expr_;
 
@@ -208,10 +256,15 @@ termo_ : (
       )?
       ;
 
-fator : NUMBER {_exprContent += _input.LT(-1).getText();}
-        | STRING {_exprContent += _input.LT(-1).getText();} 
+fator : NUMBER {
+                _exprContent += _input.LT(-1).getText();
+               }
+        | STRING {
+                 _exprContent += _input.LT(-1).getText();
+                 } 
         | ID {
                 verificaID(_input.LT(-1).getText());
+                IsiVariable var = (IsiVariable) symbolTable.get(_input.LT(-1).getText());
                 _exprContent += _input.LT(-1).getText();
             }
         | AP {_exprContent += _input.LT(-1).getText();}
@@ -220,13 +273,13 @@ fator : NUMBER {_exprContent += _input.LT(-1).getText();}
       ;
 	
 OPSOMA: '+'
-    ;
+      ;
 
 OPSUB: '-'
-    ;
+     ;
 
 OPMUL: '*'
-    ;
+     ;
 
 OPDIV: '/'
     ;
@@ -240,6 +293,9 @@ FP	: ')'
 SC	: ';'
 	;
 	
+COLON  : ':'
+       ;
+
 OP	: '+' | '-' | '*' | '/'
 	;
 	
