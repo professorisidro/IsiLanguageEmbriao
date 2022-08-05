@@ -106,7 +106,7 @@ cmd		:  cmdleitura
  		|  cmdattrib
  		|  cmdselecao  
         |  cmdenquanto
-        |  cmdcaso
+        |  cmdcase
 		;
 		
 cmdleitura	: 'leia' AP
@@ -199,8 +199,8 @@ cmdenquanto : 'enquanto' AP
               }
             ;
             
-cmdcaso     : 'escolha' AP
-              (ID | NUMBER | STRING) {_exprCase = _input.LT(-1).getText();}
+cmdcase     : 'escolha' AP
+              (ID) {_exprCase = _input.LT(-1).getText();}
               FP
               ACH
               (

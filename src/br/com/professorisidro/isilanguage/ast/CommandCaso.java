@@ -2,6 +2,7 @@ package br.com.professorisidro.isilanguage.ast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class CommandCaso extends AbstractCommand {
 
@@ -19,7 +20,24 @@ public class CommandCaso extends AbstractCommand {
     @Override
     public String generateJavaCode() {
         // TODO Auto-generated method stub
-        return null;
+        StringBuilder str = new StringBuilder();
+        str.append("switch (" + condition + ") {\n");
+        for (Map.Entry<String, ArrayList<AbstractCommand>> entry : caseCommands.entrySet()) {
+            String caseItem = entry.getKey();
+            ArrayList<AbstractCommand> commands = entry.getValue();
+            str.append("case " + caseItem + ":\n");
+            for (AbstractCommand cmd : commands) {
+                str.append(cmd.generateJavaCode());
+            }
+        }
+        if(!defaultsCommands.isEmpty()) {
+            str.append("default:\n");
+            for (AbstractCommand cmd: defaultsCommands) {
+                str.append(cmd.generateJavaCode());
+            }
+        }
+
+        return str.toString();
     }
 
     @Override
