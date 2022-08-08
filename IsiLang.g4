@@ -29,7 +29,7 @@ grammar IsiLang;
     private String _exprCase;
     private ArrayList<AbstractCommand> _caseDefault;
     private HashMap<String, ArrayList<AbstractCommand>> _caseCommands = new HashMap<String, ArrayList<AbstractCommand>>();
-    private String _caseCondition; // usado para guardar o case e salver no hashmap com os commandos correspondentes
+    private String _caseCondition; // usado para guardar o case e salvar no hashmap com os commandos correspondentes
 	private ArrayList<AbstractCommand> listaTrue;
 	private ArrayList<AbstractCommand> listaFalse;
     private ArrayList<AbstractCommand> listaEnquanto;
@@ -51,6 +51,35 @@ grammar IsiLang;
 		program.generateTarget();
 	}
 
+    public void checkAttrType(String id, String content) {
+        boolean isInt = content.matches("[0-9]*");
+        boolean isString = content.matches(".*[a-zA-Z].");
+        boolean isDouble = content.matches("[0-9]*.[0-9]*"); 
+        String type = "";
+        // FIXME var ainda nao esta na symbolTable, causa NullPointerException
+        IsiVariable var = (IsiVariable) symbolTable.get(id);
+
+        switch(var.getType()) {
+            case 0:
+                type = "int";
+            case 1:
+                type = "double";
+            case 2:
+                type = "String";
+        }
+
+        // TODO achar outro jeito de pegar o tipo do id ou arrumar o NullPointerException
+        if(isInt && var.getType() != IsiVariable.INT) {
+            throw new IsiSemanticException("Type mismatch on variable " + id + ". Expected " + type);
+        }
+        if(isDouble && var.getType() != IsiVariable.DOUBLE) {
+            throw new IsiSemanticException("Type mismatch on variable " + id + ". Expected " + type);
+        }
+        if(isString && var.getType() != IsiVariable.TEXT) {
+            throw new IsiSemanticException("Type mismatch on variable " + id + ". Expected " + type);
+        }
+    }
+
     // Checa se a condição do switch não é double
     public void checkSwitchType(String id) {
             IsiVariable var = (IsiVariable) symbolTable.get(id);
@@ -65,7 +94,6 @@ grammar IsiLang;
         boolean isString = condition.matches(".*[a-zA-Z].");
         
         if(!isString && ! isInt) {
-                System.out.println("double case");
                 throw new IsiSemanticException("You can only switch String and int");
         }
 
@@ -172,6 +200,7 @@ cmdattrib	:  ID { verificaID(_input.LT(-1).getText());
                {
                	 CommandAtribuicao cmd = new CommandAtribuicao(_exprID, _exprContent);
                	 stack.peek().add(cmd);
+                 checkAttrType(_writeID, _exprContent);
                }
 			;
 			
