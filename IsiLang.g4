@@ -50,6 +50,19 @@ grammar IsiLang;
 	public void generateCode(){
 		program.generateTarget();
 	}
+
+    // Checa se a condição do switch não é double
+    public void checkSwitchType(String id) {
+            IsiVariable var = (IsiVariable) symbolTable.get(id);
+            if(var.getType() == IsiVariable.DOUBLE) {
+                throw new IsiSemanticException("Cannot switch on a double type variable");
+            }
+    }
+
+    // Checa se os tipos dos cases batem com o switch
+    public void checkCaseType() {
+
+    }
 }
 
 prog	: 'programa' decl bloco  'fimprog;'
@@ -90,7 +103,8 @@ declaravar :  tipo ID  {
                SC
            ;
            
-tipo       : 'numero' { _tipo = IsiVariable.NUMBER;  }
+tipo       : 'int' { _tipo = IsiVariable.INT;  }
+           | 'double' { _tipo = IsiVariable.DOUBLE; }
            | 'texto'  { _tipo = IsiVariable.TEXT;  }
            ;
         
@@ -200,14 +214,18 @@ cmdenquanto : 'enquanto' AP
             ;
             
 cmdcase     : 'escolha' AP
-              (ID) {_exprCase = _input.LT(-1).getText();}
+              ID {
+                    checkSwitchType(_input.LT(-1).getText());
+                    _exprCase = _input.LT(-1).getText();
+                 }
               FP
               ACH
               (
                 'caso'
-                (ID | NUMBER | STRING) {_caseCondition = _input.LT(-1).getText();}
+                (ID | INT | STRING) {_caseCondition = _input.LT(-1).getText();}
                 COLON
                 {
+                    System.out.println("case");
                     curThread = new ArrayList<AbstractCommand>();
                     stack.push(curThread);
                 }
@@ -215,7 +233,6 @@ cmdcase     : 'escolha' AP
                 'break'
                 SC
                 {
-                    System.out.println("case");
                     listaCase = stack.pop();
                     _caseCommands.put(_caseCondition, listaCase);
                 }
@@ -224,6 +241,7 @@ cmdcase     : 'escolha' AP
                 'padrao'
                 COLON
                 {
+                    System.out.println("defalt");
                     curThread = new ArrayList<AbstractCommand>();
                     stack.push(curThread);
                 }
@@ -231,9 +249,8 @@ cmdcase     : 'escolha' AP
                 'break'
                 SC
                 {
-                    System.out.println("default");
                     _caseDefault = stack.pop();
-                    CommandCaso cmd = new CommandCaso(_exprCase, _caseCommands, _caseDefault);
+                    CommandCase cmd = new CommandCase(_exprCase, _caseCommands, _caseDefault);
                     stack.peek().add(cmd);
                 }
               )?
@@ -256,15 +273,18 @@ termo_ : (
       )?
       ;
 
-fator : NUMBER {
+fator : INT {
                 _exprContent += _input.LT(-1).getText();
-               }
+            }
+        |
+        DOUBLE {
+                _exprContent += _input.LT(-1).getText();
+            }
         | STRING {
-                 _exprContent += _input.LT(-1).getText();
+                    _exprContent += _input.LT(-1).getText();
                  } 
         | ID {
                 verificaID(_input.LT(-1).getText());
-                IsiVariable var = (IsiVariable) symbolTable.get(_input.LT(-1).getText());
                 _exprContent += _input.LT(-1).getText();
             }
         | AP {_exprContent += _input.LT(-1).getText();}
@@ -318,8 +338,11 @@ OPREL : '>' | '<' | '>=' | '<=' | '==' | '!='
 ID	: [a-z] ([a-z] | [A-Z] | [0-9])*
 	;
 	
-NUMBER	: [0-9]+ ('.' [0-9]+)?
+DOUBLE	: [0-9]+ ('.' [0-9]+)?
 		;
+
+INT     : [0-9]+
+        ;
 
 STRING  : '"' ( '\\"' | . )*? '"'
         ;
