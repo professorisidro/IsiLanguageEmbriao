@@ -60,8 +60,21 @@ grammar IsiLang;
     }
 
     // Checa se os tipos dos cases batem com o switch
-    public void checkCaseType() {
+    public void checkCaseType(int targetType, String condition) {
+        boolean isInt = condition.matches("[0-9]*");
+        boolean isString = condition.matches(".*[a-zA-Z].");
+        
+        if(!isString && ! isInt) {
+                System.out.println("double case");
+                throw new IsiSemanticException("You can only switch String and int");
+        }
 
+        if(!isInt && targetType == IsiVariable.INT) {
+                throw new IsiSemanticException("Case type must be the same of the switch variable");
+        }
+        else if(!isString && targetType == IsiVariable.TEXT) {
+                throw new IsiSemanticException("Case type must be the same of the switch variable");
+        }
     }
 }
 
@@ -222,10 +235,13 @@ cmdcase     : 'escolha' AP
               ACH
               (
                 'caso'
-                (ID | INT | STRING) {_caseCondition = _input.LT(-1).getText();}
+                (INT | STRING) {
+                                    _caseCondition = _input.LT(-1).getText();
+                                    IsiVariable var = (IsiVariable) symbolTable.get(_exprCase);
+                                    checkCaseType(var.getType(), _caseCondition);
+                               }
                 COLON
                 {
-                    System.out.println("case");
                     curThread = new ArrayList<AbstractCommand>();
                     stack.push(curThread);
                 }
@@ -241,7 +257,6 @@ cmdcase     : 'escolha' AP
                 'padrao'
                 COLON
                 {
-                    System.out.println("defalt");
                     curThread = new ArrayList<AbstractCommand>();
                     stack.push(curThread);
                 }
@@ -338,7 +353,7 @@ OPREL : '>' | '<' | '>=' | '<=' | '==' | '!='
 ID	: [a-z] ([a-z] | [A-Z] | [0-9])*
 	;
 	
-DOUBLE	: [0-9]+ ('.' [0-9]+)?
+DOUBLE	: [0-9]+ ('.' [0-9]+)
 		;
 
 INT     : [0-9]+
