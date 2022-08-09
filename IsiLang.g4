@@ -51,32 +51,49 @@ grammar IsiLang;
 		program.generateTarget();
 	}
 
-    public void checkAttrType(String id, String content) {
-        boolean isInt = content.matches("[0-9]*");
-        boolean isString = content.matches(".*[a-zA-Z].");
-        boolean isDouble = content.matches("[0-9]*.[0-9]*"); 
-        String type = "";
-        // FIXME var ainda nao esta na symbolTable, causa NullPointerException
-        IsiVariable var = (IsiVariable) symbolTable.get(id);
+    public void checkAttrType(IsiVariable var) {
+        boolean isInt = false;
+        boolean isDouble = false;
+        boolean isString = var.getValue().matches(".*[a-zA-Z].");
+        Number number = null;
 
-        switch(var.getType()) {
-            case 0:
-                type = "int";
-            case 1:
+        // Caso não seja uma String(i.e. apenas letras) assume-se que é um número e testa seu tipo
+        if(!isString) {
+            try {
+                if(var.getValue().indexOf(".") >= 0) {
+                        number = Double.parseDouble(var.getValue());
+                        isDouble = true;
+                } 
+                else {
+                        number = Integer.parseInt(var.getValue());
+                        isInt = true;
+                }
+            }
+            catch(NumberFormatException ex) {
+                System.out.println("Input not valid");
+            }
+        } 
+
+        String type = "";
+
+        if(var.getType() == 0) {
+               type = "int";
+        }
+        else if(var.getType() == 1) {
                 type = "double";
-            case 2:
+        }
+        else {
                 type = "String";
         }
 
-        // TODO achar outro jeito de pegar o tipo do id ou arrumar o NullPointerException
         if(isInt && var.getType() != IsiVariable.INT) {
-            throw new IsiSemanticException("Type mismatch on variable " + id + ". Expected " + type);
+            throw new IsiSemanticException("Type mismatch on variable " + var.getName() + ". Expected " + type);
         }
         if(isDouble && var.getType() != IsiVariable.DOUBLE) {
-            throw new IsiSemanticException("Type mismatch on variable " + id + ". Expected " + type);
+            throw new IsiSemanticException("Type mismatch on variable " + var.getName() + ". Expected " + type);
         }
         if(isString && var.getType() != IsiVariable.TEXT) {
-            throw new IsiSemanticException("Type mismatch on variable " + id + ". Expected " + type);
+            throw new IsiSemanticException("Type mismatch on variable " + var.getName() + ". Expected " + type);
         }
     }
 
@@ -200,7 +217,9 @@ cmdattrib	:  ID { verificaID(_input.LT(-1).getText());
                {
                	 CommandAtribuicao cmd = new CommandAtribuicao(_exprID, _exprContent);
                	 stack.peek().add(cmd);
-                 checkAttrType(_writeID, _exprContent);
+                 IsiVariable var = (IsiVariable) symbolTable.get(_exprID);
+                 var.setValue(_exprContent);
+                 checkAttrType(var);
                }
 			;
 			
