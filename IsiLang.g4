@@ -70,30 +70,42 @@ grammar IsiLang;
                 }
             }
             catch(NumberFormatException ex) {
-                System.out.println("Input not valid");
+                throw new IsiSemanticException("Invalid type on variable " + var.getName());
             }
         } 
 
-        String type = "";
-
+        // Pega o tipo esperado pela variável
+        String targetType = "";
         if(var.getType() == 0) {
-               type = "int";
+               targetType = "int";
         }
         else if(var.getType() == 1) {
-                type = "double";
+                targetType = "double";
         }
         else {
-                type = "String";
+                targetType = "String";
+        }
+
+        // Pega qual tipo recebido pela variável
+        String gotType = "";
+        if(isString) {
+                gotType = "String";
+        }
+        else if(isInt) {
+                gotType = "int";
+        }
+        else if(isDouble) {
+                gotType = "double";
         }
 
         if(isInt && var.getType() != IsiVariable.INT) {
-            throw new IsiSemanticException("Type mismatch on variable " + var.getName() + ". Expected " + type);
+            throw new IsiSemanticException("Type mismatch on variable " + var.getName() + ". Expected " + targetType + " but got " + gotType);
         }
         if(isDouble && var.getType() != IsiVariable.DOUBLE) {
-            throw new IsiSemanticException("Type mismatch on variable " + var.getName() + ". Expected " + type);
+            throw new IsiSemanticException("Type mismatch on variable " + var.getName() + ". Expected " + targetType + " but got " + gotType);
         }
         if(isString && var.getType() != IsiVariable.TEXT) {
-            throw new IsiSemanticException("Type mismatch on variable " + var.getName() + ". Expected " + type);
+            throw new IsiSemanticException("Type mismatch on variable " + var.getName() + ". Expected " + targetType + " but got " + gotType);
         }
     }
 
@@ -111,14 +123,14 @@ grammar IsiLang;
         boolean isString = condition.matches(".*[a-zA-Z].");
         
         if(!isString && ! isInt) {
-                throw new IsiSemanticException("You can only switch String and int");
+            throw new IsiSemanticException("You can only switch String and int");
         }
 
         if(!isInt && targetType == IsiVariable.INT) {
-                throw new IsiSemanticException("Case type must be the same of the switch variable");
+            throw new IsiSemanticException("Case type must be the same of the switch variable");
         }
         else if(!isString && targetType == IsiVariable.TEXT) {
-                throw new IsiSemanticException("Case type must be the same of the switch variable");
+            throw new IsiSemanticException("Case type must be the same of the switch variable");
         }
     }
 }

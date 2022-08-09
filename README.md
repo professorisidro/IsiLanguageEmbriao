@@ -11,13 +11,13 @@
 ser realizada de maneira correta, respeitando a precedência.
 - [x] Verificação de variáveis não declaradas (cada variável utilizada deve ser
 verificada se foi declarada).
-- [ ] Atribuições: verificação de tipos.
+- [x] Atribuições: verificação de tipos.
 - [x] Os comandos de leitura do teclado e de impressão na tela devem ser disponibilizados.
 
 ### Anexo 1 - Elementos Adicionais(pelo menos 2 items)
 
 - [x] Nova instrução para Switch/Case (escolha/caso)
-- [ ] Mais tipos de dados
+- [x] Mais tipos de dados
 - [ ] Inclusão de novos operadores (exponenciação, raiz quadrada, logaritmos)
 - [ ] Geração de código para mais de uma linguagem diferente
 
