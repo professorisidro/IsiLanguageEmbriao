@@ -1,13 +1,14 @@
 package br.com.professorisidro.isilanguage.datastructures;
 
 public class IsiVariable extends IsiSymbol {
-	
-	public static final int NUMBER=0;
-	public static final int TEXT  =1;
-	
+
+	public static final int INT = 0;
+	public static final int DOUBLE = 1;
+	public static final int TEXT = 2;
+
 	private int type;
 	private String value;
-	
+
 	public IsiVariable(String name, int type, String value) {
 		super(name);
 		this.type = type;
@@ -34,18 +35,30 @@ public class IsiVariable extends IsiSymbol {
 	public String toString() {
 		return "IsiVariable [name=" + name + ", type=" + type + ", value=" + value + "]";
 	}
-	
+
 	public String generateJavaCode() {
-       String str;
-       if (type == NUMBER) {
-    	   str = "double ";
-       }
-       else {
-    	   str = "String ";
-       }
-       return str + " "+super.name+";";
+		String str;
+		if (type == DOUBLE) {
+			str = "double ";
+		} else if (type == INT) {
+			str = "int";
+		} else {
+			str = "String ";
+		}
+		return str + " " + super.name + ";";
 	}
-	
-	
+
+	@Override
+	public String generateDartCode() {
+		String str;
+		if (type == DOUBLE) {
+			str = "double ";
+		} else if (type == INT) {
+			str = "int";
+		} else {
+			str = "String ";
+		}
+		return str + " " + super.name + ";";
+	}
 
 }

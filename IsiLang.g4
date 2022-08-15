@@ -47,9 +47,13 @@ grammar IsiLang;
 		}
 	}
 	
-	public void generateCode(){
-		program.generateTarget();
+	public void generateJavaCode(){
+		program.generateJavaTarget();
 	}
+
+    public void generateDartCode() {
+        program.generateDartTarget();
+    }
 
     public void checkAttrType(IsiVariable var) {
         boolean isInt = false;
