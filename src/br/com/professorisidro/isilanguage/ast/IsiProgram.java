@@ -40,7 +40,8 @@ public class IsiProgram {
 
 	public void generateDartTarget() {
 		StringBuilder str = new StringBuilder();
-		str.append("import 'dart:io';");
+		str.append("import 'dart:io';\n");
+		str.append("import 'dart:convert';\n");
 		str.append("void main() {\n");
 		for (IsiSymbol symbol : varTable.getAll()) {
 			str.append(symbol.generateDartCode() + "\n");

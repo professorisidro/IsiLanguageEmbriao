@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:convert';
 
 void main() {
   int a;
@@ -6,6 +7,7 @@ void main() {
   String t;
   a = 1;
   b = 1;
+  stdin.readLineSync(encoding: utf8);
   if (a < b) {
     a = 0;
   } else {
