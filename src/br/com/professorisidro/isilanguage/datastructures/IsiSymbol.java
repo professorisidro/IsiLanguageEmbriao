@@ -5,6 +5,7 @@ public abstract class IsiSymbol {
 	protected String name;
 	
 	public abstract String generateJavaCode();
+	public abstract String generateDartCode() ;
 	public IsiSymbol(String name) {
 		this.name = name;
 		

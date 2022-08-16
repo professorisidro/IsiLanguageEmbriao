@@ -1,21 +1,28 @@
 programa
 
-  numero a, b;
-  texto  t1;
+  int a, b;
+  texto t;
 
+  a = 1;
+  b = 1;
+  
   leia(a);
-  leia(b);
-  
-  a = 1 + 2 * 3 / b;
-  
-
-  se ( a > b ) {
-     escreva (a);
+  se(a < b) {
+    a = 0;
   }
   senao {
-     escreva (b);
+    b = 0;
   }
-  
-  
 
+  escolha(a) {
+    caso 1:
+      b = 0;
+      break;
+    caso 2:
+      a = 0;
+      break;
+    padrao:
+      a = 1;
+      break;
+  }
 fimprog;

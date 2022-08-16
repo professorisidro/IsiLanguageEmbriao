@@ -1,15 +1,30 @@
 import java.util.Scanner;
-public class MainClass{ 
-  public static void main(String args[]){
-       Scanner _key = new Scanner(System.in);
-double  a;
-double  b;
-String  t1;
-a= _key.nextDouble();
-b= _key.nextDouble();
-a = 1+2*3/b;
-if (a>b) {
-System.out.println(a);}else {
-System.out.println(b);}
 
-  }}
+public class MainClass {
+  public static void main(String args[]) {
+    Scanner _key = new Scanner(System.in);
+    int a;
+    int b;
+    String t;
+    a = 1;
+    b = 1;
+    a = _key.nextInt();
+    if (a < b) {
+      a = 0;
+    } else {
+      b = 0;
+    }
+
+    switch (a) {
+      case 1:
+        b = 0;
+      case 2:
+        a = 0;
+      default:
+        a = 1;
+
+    }
+
+    _key.close();
+  }
+}
