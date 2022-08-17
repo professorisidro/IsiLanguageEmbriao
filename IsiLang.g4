@@ -194,13 +194,35 @@ termo		: ID { verificaID(_input.LT(-1).getText());
               {
               	_exprContent += _input.LT(-1).getText();
               }
+            |
+              LOGARITHM
+              {
+              	_exprContent += _input.LT(-1).getText();
+              }
+            |
+              SQUAREROOT
+              {
+              	_exprContent += _input.LT(-1).getText();
+              } 
 			;
 
 booleano : 'true' { _exprContent += _input.LT(-1).getText(); } 
 			| 
 		   'false' { _exprContent += _input.LT(-1).getText(); }
          ;
-			
+             
+LOGARITHM : 'log' 
+            NUMBER
+            AP 
+            (NUMBER | ID) 
+            FP
+          ;
+          
+SQUAREROOT :  'sqrt' 
+               AP 
+               (NUMBER | ID) 
+               FP
+            ;
 	
 AP	: '('
 	;
@@ -211,7 +233,7 @@ FP	: ')'
 SC	: ';'
 	;
 	
-OP	: '+' | '-' | '*' | '/'
+OP	: '+' | '-' | '*' | '/' | '^'
 	;
 	
 ATTR : '='
@@ -233,6 +255,6 @@ ID	: [a-z] ([a-z] | [A-Z] | [0-9])*
 	;
 	
 NUMBER	: [0-9]+ ('.' [0-9]+)?
-		;
+		;				
         		
 WS	: (' ' | '\t' | '\n' | '\r') -> skip;
