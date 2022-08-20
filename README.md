@@ -11,23 +11,23 @@ Embriao da IsiLanguage - curso de Compiladores
 ## Itens entregues no projeto
 
 ### Checklist
-- [ ] Possuir 2 tipos de dados (pelo menos 1 String) 	
-- [ ] Possuir a instrução de decisão (if/else)	
+- [x] Possuir 2 tipos de dados (pelo menos 1 String) 	
+- [x] Possuir a instrução de decisão (if/else)	
 - [ ] Pelo menos 1 estrutura de repetição	
-- [ ] Verificar Atribuições com compatibilidade de tipos (semântica) 	
-- [ ] Possuir operações de Entrada e Saída	
-- [ ] Aceitar números decimais 	
-- [ ] Verificar declaração de variávies (não usar variáveis que não foram declaradas)	
-- [ ] Verificar se há variáveis declaradas e não-utilizadas (warning)	
-- [ ] Geração de pelo menos 1 linguagem destino (C/Java/Python)
+- [x] Verificar Atribuições com compatibilidade de tipos (semântica) 	
+- [x] Possuir operações de Entrada e Saída	
+- [x] Aceitar números decimais 	
+- [x] Verificar declaração de variávies (não usar variáveis que não foram declaradas)	
+- [x] Verificar se há variáveis declaradas e não-utilizadas (warning)	
+- [x] Geração de pelo menos 1 linguagem destino (C/Java/Python)
 
 ### Itens adicionais (Anexo 1)
 - [X] Incluir mais tipos de dados 
 - [ ] Incluir novos operadores (exponenciação, raiz quadrada, logaritmos)
 
 ### Itens extraordinários (Anexo 2)
-- [ ] A
-- [ ] B
+- [x] Criar um editor Web para o código
+- [x] Tornar o compilador um Webservice para receber programas e enviar respostas de possíveis erros
 
 ## Link para o vídeo do Youtube
 
